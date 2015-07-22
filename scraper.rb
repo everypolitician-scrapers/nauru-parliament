@@ -35,7 +35,7 @@ def scrape_list(url)
       faction: tds[2].text.tidy,
       wikipedia: tds[0].css('a[href*="/wiki/"]/@href').text,
       portfolio: tds[3].text.tidy,
-      term: '2013',
+      term: '21',
       source: url,
     }
     data[:wikipedia] = URI.join('https://en.wikipedia.org/', data[:wikipedia]).to_s unless data[:wikipedia].to_s.empty?
