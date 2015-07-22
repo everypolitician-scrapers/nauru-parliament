@@ -33,6 +33,7 @@ def scrape_list(url)
       name: tds[0].text.tidy,
       party: tds[1].text.tidy,
       faction: tds[2].text.tidy,
+      constituency: current_constituency.sub(' Constituency', ''),
       wikipedia: tds[0].css('a[href*="/wiki/"]/@href').text,
       portfolio: tds[3].text.tidy,
       term: '21',
