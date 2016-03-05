@@ -31,12 +31,12 @@ def scrape_list(url, term)
     end
     data = { 
       name: tds[0].text.tidy,
-      party: tds[1].text.tidy,
-      faction: tds[2].text.tidy,
+      party: tds[1] ? tds[1].text.tidy : 'Unknown',
+      faction: tds[2] ? tds[2].text.tidy : 'Unknown',
       constituency: current_constituency.sub(' Constituency', ''),
       wikiname: tds[0].xpath('a[not(@class="new")]/@title').text,
       term: term.to_s,
-    } rescue binding.pry
+    } 
     # puts data
     ScraperWiki.save_sqlite([:name, :term], data)
   end
@@ -44,3 +44,4 @@ end
 
 scrape_list('https://en.wikipedia.org/wiki/Parliament_of_Nauru', 21)
 scrape_list('https://en.wikipedia.org/w/index.php?title=Parliament_of_Nauru&oldid=555396216', 20)
+scrape_list('https://en.wikipedia.org/w/index.php?title=Parliament_of_Nauru&oldid=361849426', 19)
