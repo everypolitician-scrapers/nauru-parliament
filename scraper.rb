@@ -20,11 +20,11 @@ def noko_for(url)
   Nokogiri::HTML(open(url).read) 
 end
 
-def scrape_list(url)
+def scrape_list(url, term)
   noko = noko_for(url)
 
   current_constituency = ''
-  noko.xpath('.//h2[contains(.,"Current MPs")]/following-sibling::table[1]//tr[td]').each do |tr|
+  noko.xpath('.//table[.//th[.="Constituency"]]//tr[td]').each do |tr|
     tds = tr.css('td')
     if tds.first.text.include? 'Constituency'
       current_constituency = tds.shift.text.tidy
@@ -34,15 +34,13 @@ def scrape_list(url)
       party: tds[1].text.tidy,
       faction: tds[2].text.tidy,
       constituency: current_constituency.sub(' Constituency', ''),
-      wikipedia: tds[0].css('a[href*="/wiki/"]/@href').text,
-      portfolio: tds[3].text.tidy,
-      term: '21',
-      source: url,
-    }
-    data[:wikipedia] = URI.join('https://en.wikipedia.org/', data[:wikipedia]).to_s unless data[:wikipedia].to_s.empty?
-    # puts data
+      wikiname: tds[0].xpath('a[not(@class="new")]/@title').text,
+      term: term.to_s,
+    } rescue binding.pry
+    # puts data
     ScraperWiki.save_sqlite([:name, :term], data)
   end
 end
 
-scrape_list('https://en.wikipedia.org/wiki/Parliament_of_Nauru')
+scrape_list('https://en.wikipedia.org/wiki/Parliament_of_Nauru', 21)
+scrape_list('https://en.wikipedia.org/w/index.php?title=Parliament_of_Nauru&oldid=555396216', 20)
