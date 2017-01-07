@@ -35,6 +35,7 @@ def scrape_list(url, term)
   end
 end
 
+ScraperWiki.sqliteexecute('DELETE FROM data') rescue nil
 scrape_list('https://en.wikipedia.org/wiki/Parliament_of_Nauru', 21)
 scrape_list('https://en.wikipedia.org/w/index.php?title=Parliament_of_Nauru&oldid=555396216', 20)
 scrape_list('https://en.wikipedia.org/w/index.php?title=Parliament_of_Nauru&oldid=361849426', 19)
