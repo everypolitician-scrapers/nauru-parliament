@@ -17,7 +17,7 @@ def scrape_list(url, term)
   noko = noko_for(url)
 
   current_constituency = ''
-  noko.xpath('.//table[.//th[.="Constituency"]]//tr[td]').each do |tr|
+  noko.xpath('.//table[.//th[contains(.,"Constituency")]]//tr[td]').each do |tr|
     tds = tr.css('td')
     if tds.first.text.include? 'Constituency'
       current_constituency = tds.shift.text.tidy
